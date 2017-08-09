@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.mapper.UserMapper">
+    <sql id="base_sql">
+        userid,username,pwd
+    </sql>
+    <resultMap id="UserResultMap" type="com.entity.User">
+        <id column="userid" property="userid"/>
+        <result column="username" property="userName"/>
+        <result column="pwd" property="pwd"/>
+
+    </resultMap>
+
+    <select id="getUser" resultMap="UserResultMap">
+          SELECT
+           <include refid="base_sql"></include>
+           FROM t_user WHERE username=#{userName,jdbcType=VARCHAR} AND pwd=#{pwd,jdbcType=VARCHAR}
+    </select>
+    <insert id="addUser" parameterType="com.entity.User">
+        <selectKey resultType="java.lang.Integer" keyProperty="userid" order="BEFORE">
+            SELECT emp_seq.nextval userid FROM dual
+        </selectKey>
+        INSERT INTO t_user(userid,userName,pwd) VALUES (#{userid},#{userName},#{pwd})
+    </insert>
+    <select id="validateUsername" resultMap="UserResultMap">
+        SELECT
+        <include refid="base_sql"></include>
+        FROM t_user WHERE username=#{userName,jdbcType=VARCHAR}
+    </select>
+</mapper>

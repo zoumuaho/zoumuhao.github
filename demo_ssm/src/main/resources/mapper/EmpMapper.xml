@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.mapper.EmpMapper">
+    <resultMap id="EmpResultMap" type="com.entity.Emp">
+        <id column="empno" property="empno"/>
+        <result column="ename" property="ename"/>
+        <result column="job" property="job"/>
+        <result column="mgr" property="mgr"/>
+        <result column="hiredate" property="hiredate"/>
+        <result column="sal" property="sal"/>
+        <result column="comm" property="comm"/>
+    </resultMap>
+    <!--查询所有员工信息-->
+    <select id="selectEmpList" resultMap="EmpResultMap" parameterType="com.entity.Emp">
+          SELECT empno,ename,job,mgr,hiredate,sal,comm FROM t_emp ORDER BY empno DESC
+    </select>
+    <delete id="deleteEmp" parameterType="com.entity.Emp">
+        DELETE FROM t_emp WHERE empno = #{empno}
+    </delete>
+    <insert id="getAddEmp" parameterType="com.entity.Emp">
+        <!--<selectKey resultType="java.lang.Integer" keyProperty="empno" order="BEFORE">
+            SELECT emp_seq.nextval empno FROM dual
+        </selectKey>-->
+        INSERT INTO t_emp (empno,ename,job,mgr,hiredate,sal,comm)VALUES(emp_seq.nextval,#{ename},#{job},#{mgr},#{hiredate},#{sal},#{comm})
+    </insert>
+</mapper>
